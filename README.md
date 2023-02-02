@@ -7,15 +7,12 @@ This module will add lifecycle hooks to run commands on autoscaling group instan
 Queuing is used to ensure commands are run one at a time in the case you are doing a rolling deployment of infrastructure, such as is used in the create_before_destroy lifecycle.
 
 It uses SSM, Lifecycle hooks, SNS topics,
-The module will create the IAM policies, SNS topics, Lambda function, and lifecycle hooks. It will create a list in Consul for queuing at /kv/asg/${name} so ensure this is accessible.
-
-## Requirements
+The module will create the IAM policies, SNS topics, Lambda function, and lifecycle hooks. 
 
 - A script that the lambda will run
 - The AWS SSM agent is installed on your instances
 - An Autoscaling Group name to attach this to
 - A subnet with a NAT Gateway (for Lambda to reach out to SSM)
-- A security group that will allow Lambda to make HTTP requests to consul
 
 ## Usage
 
@@ -28,7 +25,7 @@ Take note of the 'commands' format. The commands will be run in the order you pl
 
 `subnet_ids` An array of subnets to put the Lambda function in.
 
-`security_group_ids` Security group for Lambda to communicate with consul
+`security_group_ids` Security group for Lambda
 
 `commands` A comma separated string with commands to run on instance termination
 
