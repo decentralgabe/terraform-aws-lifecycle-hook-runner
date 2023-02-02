@@ -11,7 +11,7 @@ The module will create the IAM policies, SNS topics, Lambda function, and lifecy
 
 ## Requirements
 
-- A Consul KV store that lambda can write to from your AWS environment
+- A script that the lambda will run
 - The AWS SSM agent is installed on your instances
 - An Autoscaling Group name to attach this to
 - A subnet with a NAT Gateway (for Lambda to reach out to SSM)
@@ -32,24 +32,20 @@ Take note of the 'commands' format. The commands will be run in the order you pl
 
 `commands` A comma separated string with commands to run on instance termination
 
-`consul_url` The base consul URL like shown below. It will append the path to this.
-
 `autoscaling_group_name` Name of your autoscaling group
 
 ### TF
 
 ```hcl
 module "lifecycle_hook" {
-  source                      = "github.com/sprutner/terraform-aws-lifecycle-hook-runner"
+  source                      = "github.com/decentralgabe/terraform-aws-lifecycle-hook-runner"
   name                        = "test"
   environment                 = "${var.environment}"
   subnet_ids                  = "${module.vpc.app_subnets}"
   security_group_ids          = "${aws_security_group.docker.id}"
   commands                    = <<EOF
-echo 'test',
-echo 'hola'
-EOF
-  consul_url                  = "http://consul.companyxyz${var.environment}.dev"
-  autoscaling_group_name      = "${module.nomad_client.asg_name}"
+      echo 'test',
+  EOF
+  autoscaling_group_name      = "${module.autoscaling.asg_name}"
 }
 ```

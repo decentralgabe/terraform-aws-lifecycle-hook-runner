@@ -4,11 +4,11 @@ variable "name" {
 
 variable "environment" {
   description = "Name of your environment"
-  default = "dev"
+  default     = "dev"
 }
 
 variable "subnet_ids" {
-  type        = "list"
+  type        = list(string)
   description = "Desired subnet with Internet and Consul access for Lambda Function"
 }
 
@@ -20,13 +20,8 @@ variable "security_group_ids" {
 variable "commands" {
   description = "CSV string of commands to run"
   default     = <<EOF
-echo 'hello world',
-echo 'hello sunshine'
-EOF
-}
-
-variable "consul_url" {
-  description = "Base URL of your consul server"
+      echo 'hello world'
+  EOF
 }
 
 variable "autoscaling_group_name" {
